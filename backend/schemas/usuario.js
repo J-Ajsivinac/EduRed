@@ -23,8 +23,23 @@ const userSchema = z.object({
     })
 })
 
+const courseSchema = z.object({
+    carnet: z.number().int({
+        invalid_type_error: 'El carnet debe ser un numero entero',
+        required_error: 'El carnet es requerido'
+    }).min(190000000).max(204099999),
+    idCurso: z.string({
+        invalid_type_error: 'El id del curso debe ser una cadena de caracteres',
+        required_error: 'El id_curso es requerido'
+    })
+})
+
 export function validateUser(input) {
     return userSchema.safeParse(input)
+}
+
+export function validateCourses(input) {
+    return courseSchema.safeParse(input)
 }
 
 export function validatePartialUser(input) {

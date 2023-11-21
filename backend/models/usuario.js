@@ -54,4 +54,37 @@ export class UserModel {
             }
         }
     }
+
+    static async addCourse({ input }) {
+        let connection
+        const { carnet, idCurso } = input
+        try {
+            connection = await Conect.con()
+            const res = await connection.query('INSERT INTO usuario_has_curso VALUES ( ?, UUID_TO_BIN(?))', [carnet, idCurso])
+            if (res.affectedRows === 0) return { message: 'Error al registrar el curso ganado', code: 0 }
+            return { message: 'Curso ganado registrado con éxito', code: 1 }
+        } catch (error) {
+            if (error.code === 'ER_DUP_ENTRY') return { message: 'El curso ya ha sido registrado' }
+            return { message: 'Error', code: 0, error }
+        } finally {
+            if (connection) {
+                await Conect.close(connection)
+            }
+        }
+    }
+
+    static async getCourse({ id }) {
+        let connection
+        try {
+            connection = await Conect.con()
+            const res = await connection.query('SELECT curso.nombre, curso.creditos FROM curso INNER JOIN usuario_has_curso ON usuario_has_curso.curso_idcurso = curso.idcurso WHERE usuario_has_curso.usuario_carnet=?', [id])
+            return res[0]
+        } catch (error) {
+            return { message: 'Error', code: 0 }
+        } finally {
+            if (connection) {
+                await Conect.close(connection)
+            }
+        }
+    }
 }

@@ -7,5 +7,7 @@ export const createUserRouter = ({ UserModel }) => {
     userRouter.get('/:id', userController.getByCarnet)
     userRouter.post('/', userController.createUser)
     userRouter.patch('/', userController.changePassword)
+    userRouter.get('/course/:id', userController.getCourses)
+    userRouter.post('/course/', userController.addCourse)
     return userRouter
 }

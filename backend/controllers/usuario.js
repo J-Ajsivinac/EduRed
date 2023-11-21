@@ -1,4 +1,4 @@
-import { validatePartialUser, validateUser } from '../schemas/usuario.js'
+import { validateCourses, validatePartialUser, validateUser } from '../schemas/usuario.js'
 
 export class UserController {
     constructor({ UserModel }) {
@@ -24,5 +24,19 @@ export class UserController {
         if (!data.success) return res.status(400).json(data.error)
         const changePassword = await this.userModel.changePassword({ input: data.data })
         res.status(200).json(changePassword)
+    }
+
+    addCourse = async(req, res) => {
+        const data = validateCourses(req.body)
+        if (!data.success) return res.status(400).json(data.error)
+        const changePassword = await this.userModel.addCourse({ input: data.data })
+        res.status(200).json(changePassword)
+    }
+
+    getCourses = async(req, res) => {
+        const id = parseInt(req.params.id)
+        const courses = await this.userModel.getCourse({ id })
+        if (courses) return res.json(courses)
+        res.status(404).json({ message: 'Course not found' })
     }
 }
