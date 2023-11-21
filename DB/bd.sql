@@ -147,8 +147,9 @@ CREATE TABLE IF NOT EXISTS `bd_social`.`usuario_has_curso` (
   `usuario_carnet` INT NOT NULL,
   `curso_idcurso` BINARY(16) NOT NULL,
   PRIMARY KEY (`usuario_carnet`, `curso_idcurso`),
-  INDEX `fk_usuario_has_curso_curso1_idx` (`curso_idcurso` ASC) VISIBLE,
+  INDEX `fk_usuario_has_curso_curso1_idx` (`curso_idcurso` ASC) INVISIBLE,
   INDEX `fk_usuario_has_curso_usuario1_idx` (`usuario_carnet` ASC) VISIBLE,
+  UNIQUE INDEX `indice` (`usuario_carnet` ASC, `curso_idcurso` ASC) VISIBLE,
   CONSTRAINT `fk_usuario_has_curso_usuario1`
     FOREIGN KEY (`usuario_carnet`)
     REFERENCES `bd_social`.`usuario` (`carnet`)
