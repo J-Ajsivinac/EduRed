@@ -7,6 +7,7 @@ export const createPubRoutes = ({ PublicationModel }) => {
     // userRouter.get('/:type', userController.getByCarnet)
     userRouter.post('/', pubController.createPub)
     userRouter.get('/', pubController.getPub)
-    userRouter.get('/:id', pubController.getPubByType)
+    userRouter.get('/type/:id', pubController.getPubByType)
+    userRouter.get('/name/:id', pubController.getPubByName)
     return userRouter
 }

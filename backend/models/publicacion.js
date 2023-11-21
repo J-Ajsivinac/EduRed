@@ -61,20 +61,18 @@ export class PublicationModel {
         }
     }
 
-    // static async changePassword({ input }) {
-    //     let connection
-    //     const { carnet, correo, contrasena } = input
-    //     try {
-    //         connection = await Conect.con()
-    //         const res = await connection.query('UPDATE usuario SET contrasena = ? WHERE carnet= ? AND correo = ?', [contrasena, carnet, correo])
-    //         if (res[0].affectedRows === 0) return { message: 'No se pudo cambiar la contrasena', code: 0 }
-    //         return { message: 'Cambio de Contrasena realizado', code: 1 }
-    //     } catch (error) {
-    //         return { message: 'Error', code: 0 }
-    //     } finally {
-    //         if (connection) {
-    //             await Conect.close(connection)
-    //         }
-    //     }
-    // }
+    static async getAllByName({ id }) {
+        let connection
+        try {
+            connection = await Conect.con()
+            const res = await connection.query("SELECT BIN_TO_UUID(idpublicacion) idpublicacion,mensaje,DATE_FORMAT(fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,titulo, BIN_TO_UUID(acercade) acercade,usuario_carnet, tipopublicacion_idtipopublicacion FROM publicacion WHERE acercade = UUID_TO_BIN(?) ORDER BY fecha DESC;", [id])
+            return res[0]
+        } catch (error) {
+            return { message: 'Error', code: 0 }
+        } finally {
+            if (connection) {
+                await Conect.close(connection)
+            }
+        }
+    }
 }

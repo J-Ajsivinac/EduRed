@@ -25,10 +25,10 @@ export class PubController {
         // res.status(404).json({ message: 'user not found' })
     }
 
-//     changePassword = async(req, res) => {
-//         const data = validatePartialUser(req.body)
-//         if (!data.success) return res.status(400).json(data.error)
-//         const changePassword = await this.pubModel.changePassword({ input: data.data })
-//         res.status(200).json(changePassword)
-//     }
+    getPubByName = async(req, res) => {
+        const id = req.params.id
+        const user = await this.pubModel.getAllByName({ id })
+        if (user) return res.json(user)
+        // res.status(404).json({ message: 'user not found' })
+    }
 }
