@@ -9,7 +9,8 @@ export class UserModel {
         try {
             connection = await Conect.con()
             const res = await connection.query('INSERT INTO usuario (carnet, nombre, apellido, contrasena, correo) VALUES ( ?, ?, ?, ?, ?)', [carnet, nombre, apellido, contrasena, correo])
-            return res
+            if (res.affectedRows === 0) return { message: 'Error al registrar al usuario', code: 0 }
+            return { message: 'Usuario registrado con éxito', code: 1 }
         } catch (error) {
             // return { message: 'Error al consultar en la base de datos', error: error.code }
             if (error.code === 'ER_DUP_ENTRY') return { message: 'El carnet ya está registrado' }
@@ -23,7 +24,6 @@ export class UserModel {
 
     static async getByCarnet({ id }) {
         let connection
-
         try {
             connection = await Conect.con()
             const user = await connection.query('SELECT carnet, nombre, apellido, correo FROM usuario WHERE carnet = ?', [id])
