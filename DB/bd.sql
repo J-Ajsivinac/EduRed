@@ -71,22 +71,21 @@ CREATE TABLE IF NOT EXISTS `bd_social`.`publicacion` (
   `mensaje` LONGTEXT NOT NULL,
   `fecha` DATETIME NOT NULL,
   `titulo` VARCHAR(100) NOT NULL,
-  `acercade` VARCHAR(100) NOT NULL,
+  `acercade` BINARY(16) NOT NULL,
   `usuario_carnet` INT NOT NULL,
   `tipopublicacion_idtipopublicacion` INT NOT NULL,
-  `usuario_carnet1` INT NOT NULL,
   UNIQUE INDEX `idpublicacion_UNIQUE` (`idpublicacion` ASC) VISIBLE,
-  PRIMARY KEY (`idpublicacion`, `usuario_carnet`, `tipopublicacion_idtipopublicacion`, `usuario_carnet1`),
+  PRIMARY KEY (`idpublicacion`, `usuario_carnet`, `tipopublicacion_idtipopublicacion`),
+  INDEX `fk_publicacion_usuario1_idx` (`usuario_carnet` ASC) VISIBLE,
   INDEX `fk_publicacion_tipopublicacion1_idx` (`tipopublicacion_idtipopublicacion` ASC) VISIBLE,
-  INDEX `fk_publicacion_usuario1_idx` (`usuario_carnet1` ASC) VISIBLE,
+  CONSTRAINT `fk_publicacion_usuario1`
+    FOREIGN KEY (`usuario_carnet`)
+    REFERENCES `bd_social`.`usuario` (`carnet`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_publicacion_tipopublicacion1`
     FOREIGN KEY (`tipopublicacion_idtipopublicacion`)
     REFERENCES `bd_social`.`tipopublicacion` (`idtipopublicacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_publicacion_usuario1`
-    FOREIGN KEY (`usuario_carnet1`)
-    REFERENCES `bd_social`.`usuario` (`carnet`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -99,23 +98,21 @@ CREATE TABLE IF NOT EXISTS `bd_social`.`comentario` (
   `idcomentario` BINARY(16) NOT NULL,
   `contenido` LONGTEXT NOT NULL,
   `fecha` DATETIME NOT NULL,
+  `usuario_carnet` INT NOT NULL,
   `publicacion_idpublicacion` BINARY(16) NOT NULL,
   `publicacion_usuario_carnet` INT NOT NULL,
-  `publicacion_tipopublicacion_idtipopublicacion` INT NOT NULL,
-  `publicacion_usuario_carnet1` INT NOT NULL,
-  `usuario_carnet` INT NOT NULL,
-  PRIMARY KEY (`idcomentario`, `publicacion_idpublicacion`, `publicacion_usuario_carnet`, `publicacion_tipopublicacion_idtipopublicacion`, `publicacion_usuario_carnet1`, `usuario_carnet`),
+  PRIMARY KEY (`idcomentario`, `usuario_carnet`, `publicacion_idpublicacion`, `publicacion_usuario_carnet`),
   UNIQUE INDEX `idcomentario_UNIQUE` (`idcomentario` ASC) VISIBLE,
-  INDEX `fk_comentario_publicacion1_idx` (`publicacion_idpublicacion` ASC, `publicacion_usuario_carnet` ASC, `publicacion_tipopublicacion_idtipopublicacion` ASC, `publicacion_usuario_carnet1` ASC) VISIBLE,
   INDEX `fk_comentario_usuario1_idx` (`usuario_carnet` ASC) VISIBLE,
-  CONSTRAINT `fk_comentario_publicacion1`
-    FOREIGN KEY (`publicacion_idpublicacion` , `publicacion_usuario_carnet` , `publicacion_tipopublicacion_idtipopublicacion` , `publicacion_usuario_carnet1`)
-    REFERENCES `bd_social`.`publicacion` (`idpublicacion` , `usuario_carnet` , `tipopublicacion_idtipopublicacion` , `usuario_carnet1`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `fk_comentario_publicacion1_idx` (`publicacion_idpublicacion` ASC, `publicacion_usuario_carnet` ASC) VISIBLE,
   CONSTRAINT `fk_comentario_usuario1`
     FOREIGN KEY (`usuario_carnet`)
     REFERENCES `bd_social`.`usuario` (`carnet`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comentario_publicacion1`
+    FOREIGN KEY (`publicacion_idpublicacion` , `publicacion_usuario_carnet`)
+    REFERENCES `bd_social`.`publicacion` (`idpublicacion` , `usuario_carnet`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
