@@ -1,13 +1,14 @@
 import { Router } from 'express'
 import { PubController } from '../controllers/publicacion.js'
+import { auth } from '../middlewares/auth.js'
 
 export const createPubRoutes = ({ PublicationModel }) => {
     const userRouter = Router()
     const pubController = new PubController({ PublicationModel })
     // userRouter.get('/:type', userController.getByCarnet)
-    userRouter.post('/', pubController.createPub)
-    userRouter.get('/', pubController.getPub)
-    userRouter.get('/type/:id', pubController.getPubByType)
-    userRouter.get('/name/:id', pubController.getPubByName)
+    userRouter.post('/', auth, pubController.createPub)
+    userRouter.get('/', auth, pubController.getPub)
+    userRouter.get('/type/:id', auth, pubController.getPubByType)
+    userRouter.get('/name/:id', auth, pubController.getPubByName)
     return userRouter
 }

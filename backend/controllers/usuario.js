@@ -1,5 +1,5 @@
 import { validateCourses, validatePartialUser, validateUser } from '../schemas/usuario.js'
-
+import { createAccessToken } from '../libs/jwt.js'
 export class UserController {
     constructor({ UserModel }) {
         this.userModel = UserModel
@@ -9,6 +9,12 @@ export class UserController {
         const result = validateUser(req.body)
         if (!result.success) return res.status(400).json(result.error)
         const newUser = await this.userModel.creteUser({ input: result.data })
+        const token = await createAccessToken({ id: result.data.carnet })
+        res.cookie('token', token, {
+            httpOnly: process.env.NODE_ENV !== 'development',
+            secure: true,
+            sameSite: 'none'
+        })
         res.status(201).json(newUser)
     }
 
