@@ -8,13 +8,11 @@ export class AuthModel {
         const { carnet, contrasena } = input
         try {
             connection = await Conect.con()
-            const user = await connection.query('SELECT carnet, nombre, apellido, correo FROM usuario WHERE carnet = ? AND contrasena = ?', [carnet, contrasena])
-            if (user[0].length === 0) {
-                return { error: 'Credenciales incorrectas' }
-            }
-            return { user: user[0] }
+            const [user] = await connection.query('SELECT carnet, nombre, apellido, correo FROM usuario WHERE carnet = ? AND contrasena = ?', [carnet, contrasena])
+            if (user[0].length === 0) return { err: ['Credenciales incorrectas'], code: 0 }
+            return { data: user[0], code: 1 }
         } catch (error) {
-            return { message: 'Error' }
+            return { err: ['Error'], code: 0 }
         } finally {
             if (connection) {
                 await Conect.close(connection)

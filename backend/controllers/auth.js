@@ -10,15 +10,14 @@ export class AuthController {
 
     login = async(req, res) => {
         const result = validateLogin(req.body)
-        if (!result.success) return res.status(400).json(result.error)
+        if (!result.success) return res.status(400).json(result.error.errors.map((error) => error.message))
         const newUser = await this.authModel.login({ input: result.data })
+        if (newUser.code === 0) {
+            return res.status(400).json(newUser.err)
+        }
         const token = await createAccessToken({ id: result.data.carnet })
-        res.cookie('token', token, {
-            httpOnly: process.env.NODE_ENV !== 'development',
-            secure: true,
-            sameSite: 'none'
-        })
-        res.status(201).json(newUser)
+        res.cookie('token', token)
+        res.status(201).json(newUser.data)
     }
 
     logout = async(req, res) => {

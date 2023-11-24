@@ -9,12 +9,15 @@ export class UserModel {
         try {
             connection = await Conect.con()
             const res = await connection.query('INSERT INTO usuario (carnet, nombre, apellido, contrasena, correo) VALUES ( ?, ?, ?, ?, ?)', [carnet, nombre, apellido, contrasena, correo])
-            if (res.affectedRows === 0) return { message: 'Error al registrar al usuario', code: 0 }
-            return { message: 'Usuario registrado con éxito', code: 1 }
+            if (res.affectedRows === 0) return { err: ['Error al registrar al usuario'], code: 0 }
+            const [movies] = await connection.query(
+                'SELECT carnet, nombre, apellido,correo FROM usuario WHERE carnet = ?;', [carnet]
+            )
+
+            return { data: movies[0], code: 1 }
         } catch (error) {
-            // return { message: 'Error al consultar en la base de datos', error: error.code }
-            if (error.code === 'ER_DUP_ENTRY') return { message: 'El carnet ya está registrado' }
-            return { message: 'Error' }
+            if (error.code === 'ER_DUP_ENTRY') return { err: ['El carnet ya está registrado'], code: 0 }
+            return { err: ['Error'], code: 0 }
         } finally {
             if (connection) {
                 await Conect.close(connection)
