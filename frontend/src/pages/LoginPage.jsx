@@ -2,6 +2,9 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '../context/AuthContext'
 import { useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import "../utilities.css"
+import { Toaster, toast } from 'sonner';
+import { Card } from '../components/ui/Card'
 
 function LoginPage() {
     const { signin, errors: registerErrors, isAuthenticated } = useAuth()
@@ -13,35 +16,37 @@ function LoginPage() {
     useEffect(() => {
         if (isAuthenticated) navigate("/publications")
     }, [isAuthenticated])
+
+    useEffect(() => {
+        registerErrors.forEach((message) => {
+            toast.error(`${message}`, { duration: 2000 })
+        })
+    },)
+
     return (
-        <div className='flex h-screen items-center justify-center bg-zinc-800'>
-            <div className='bg-zinc-600 max-w-md w-full p-10 rounded-md'>
-                {
-                    registerErrors.map((error, i) => (
-                        <div className='bg-red-500 p-2 my-2' key={i}>
-                            {error}
-                        </div>
-                    ))
-                }
-                <h1 className='text-2xl font-bold'>Login</h1>
-                <form onSubmit={onSubmit}>
+        <div className='flex h-screen items-center justify-center bg-bg-dark'>
+            <Card>
+                <h1 className='text-2xl font-bold text-white text-center'>Login</h1>
+                <form onSubmit={onSubmit} className='flex flex-col'>
                     <input type="number" {...register("carnet", { required: true, valueAsNumber: true })}
-                        className='w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2'
-                        placeholder='Carnet' />
-                    {errors.carnet && (<p className='text-red-400'>Carnet es requerido</p>)}
+                        className='remove-arrow w-full bg-sub-dark text-white px-4 py-2 rounded-md my-2 placeholder-zinc-300'
+                        placeholder='Carnet'
+                        min={1} />
+                    {errors.carnet && (<p className='text-red-400  my-1'>Carnet es requerido</p>)}
 
                     <input type="password" {...register("contrasena", { required: true })}
-                        className='w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2'
+                        className=' w-full bg-sub-dark text-white px-4 py-2 rounded-md my-2 placeholder-zinc-300'
                         placeholder='Contraseña' />
-                    {errors.contrasena && (<p className='w-full text-red-400'>Carnet es requerido</p>)}
-                    <button type='submit' className='px-2 py-1 bg-blue-600 rounded-md'>
+                    {errors.contrasena && (<p className='w-full text-red-400'>Contraseña es requerida</p>)}
+                    <button type='submit' className='px-2 py-2 bg-blue-500 rounded-md my-2 text-white hover:bg-blue-600 hover:ease-in transition-colors'>
                         Login
                     </button>
                 </form >
-                <p className='flex gap-x-2 justify-between'>
-                    No tienes cuenta? <Link to="/register" className='text-sky-500'>Registrate</Link>
+                <p className='flex justify-between my-2'>
+                    <span className='text-white'>¿No tienes cuenta?</span> <Link to="/register" className='text-sky-500 hover:text-sky-400 hover:ease-in transition-colors'>Registrate</Link>
                 </p>
-            </div>
+            </Card>
+            <Toaster position="top-center" richColors theme="dark" />
         </div>
     )
 }
