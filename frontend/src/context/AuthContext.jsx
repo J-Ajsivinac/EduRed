@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { createContext, useState, useContext, useEffect } from 'react'
 import { loginRequest, registerRequest, verifyTokenRequest } from '../api/auth'
 import Cookies from "js-cookie";
@@ -41,10 +42,11 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        console.log(errors.length)
         if (errors.length > 0) {
             const timer = setTimeout(() => {
                 setErrors([]);
-            }, 4000);
+            }, 3000);
             return () => clearTimeout(timer);
         }
     }, [errors])
@@ -96,5 +98,9 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
+
+AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default AuthContext;
