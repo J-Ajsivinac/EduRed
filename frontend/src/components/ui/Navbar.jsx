@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { UserIcon } from './UserIcon'
-
+import Modal from '../modal/Modal'
 export function Navbar({ userName }) {
     return (
         <nav className="bg-zinc-700 my-3 mx-6 flex justify-between py-4 px-10 rounded-lg text-white items-center">
@@ -8,10 +8,7 @@ export function Navbar({ userName }) {
                 EduRed
             </h1>
             <div className='flex gap-x-4'>
-                <button className='flex flex-row items-center gap-x-2 border border-zinc-400 py-1 px-4 rounded-md '>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 18q-.425 0-.713-.288T10 17q0-.425.288-.713T11 16h2q.425 0 .713.288T14 17q0 .425-.288.713T13 18h-2Zm-4-5q-.425 0-.713-.288T6 12q0-.425.288-.713T7 11h10q.425 0 .713.288T18 12q0 .425-.288.713T17 13H7ZM4 8q-.425 0-.713-.288T3 7q0-.425.288-.713T4 6h16q.425 0 .713.288T21 7q0 .425-.288.713T20 8H4Z" /></svg>
-                    Filtrar
-                </button>
+                <Modal />
                 <label className="relative block">
                     <span className="sr-only">Search</span>
                     <span className="absolute inset-y-0 left-0 flex items-center pl-2">
