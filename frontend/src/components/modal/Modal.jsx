@@ -23,7 +23,7 @@ export default function Modal() {
             {modal && (
                 <div className="w-full h-full top-0 left-0 right-0 bottom-0 fixed">
                     <div onClick={toggleModal} className="w-full h-full top-0 left-0 right-0 bottom-0 fixed"></div>
-                    <div className="absolute top-20 left-1/4  py-2 px-2 max-w-[400px] min">
+                    <div className="absolute top-20 left-[20%]  py-3 px-3 max-w-[400px] min bg-sub-dark rounded-md">
                         <h2>Hello Modal</h2>
                         <p>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
