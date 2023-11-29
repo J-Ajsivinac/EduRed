@@ -34,7 +34,23 @@ export class PublicationModel {
 
         try {
             connection = await Conect.con()
-            const res = await connection.query("SELECT BIN_TO_UUID(idpublicacion) idpublicacion,mensaje,DATE_FORMAT(fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,titulo, BIN_TO_UUID(acercade) acercade,usuario_carnet, tipopublicacion_idtipopublicacion FROM publicacion ORDER BY fecha DESC;")
+            const res = await connection.query(`SELECT 
+                    BIN_TO_UUID(p.idpublicacion) AS idpublicacion,
+                    p.mensaje,
+                    DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
+                    p.titulo,
+                    p.usuario_carnet,
+                    p.tipopublicacion_idtipopublicacion AS tipo,
+                    CASE
+                        WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
+                        WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
+                        ELSE NULL
+                    END AS acercade
+                FROM publicacion p
+                LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
+                LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                ORDER BY p.fecha DESC;
+                `)
             return res[0]
         } catch (error) {
             return { message: 'Error', code: 0 }
@@ -47,10 +63,25 @@ export class PublicationModel {
 
     static async getAllPubByType({ id }) {
         let connection
-
         try {
             connection = await Conect.con()
-            const res = await connection.query("SELECT BIN_TO_UUID(idpublicacion) idpublicacion,mensaje,DATE_FORMAT(fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,titulo, BIN_TO_UUID(acercade) acercade,usuario_carnet, tipopublicacion_idtipopublicacion FROM publicacion WHERE tipopublicacion_idtipopublicacion = ? ORDER BY fecha DESC;", [id])
+            const res = await connection.query(`SELECT 
+                    p.mensaje,
+                    DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
+                    p.titulo,
+                    p.usuario_carnet,
+                    p.tipopublicacion_idtipopublicacion as tipo,
+                    CASE
+                        WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
+                        WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
+                        ELSE NULL
+                    END AS acercade
+                FROM publicacion p
+                LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
+                LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                WHERE p.tipopublicacion_idtipopublicacion = ?
+                ORDER BY p.fecha DESC;
+                `, [id])
             return res[0]
         } catch (error) {
             return { message: 'Error', code: 0, error }
@@ -63,12 +94,62 @@ export class PublicationModel {
 
     static async getAllByName({ id }) {
         let connection
+
         try {
             connection = await Conect.con()
-            const res = await connection.query("SELECT BIN_TO_UUID(idpublicacion) idpublicacion,mensaje,DATE_FORMAT(fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,titulo, BIN_TO_UUID(acercade) acercade,usuario_carnet, tipopublicacion_idtipopublicacion FROM publicacion WHERE acercade = UUID_TO_BIN(?) ORDER BY fecha DESC;", [id])
+            const res = await connection.query(`
+                SELECT 
+                    p.mensaje,
+                    DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
+                    p.titulo,
+                    p.usuario_carnet,
+                    p.tipopublicacion_idtipopublicacion as tipo,
+                    CASE
+                        WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
+                        WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
+                        ELSE NULL
+                    END AS acercade
+                FROM publicacion p
+                LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
+                LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                WHERE p.acercade = UUID_TO_BIN('${id}')
+                ORDER BY p.fecha DESC;
+                `)
             return res[0]
         } catch (error) {
             return { message: 'Error', code: 0 }
+        } finally {
+            if (connection) {
+                await Conect.close(connection)
+            }
+        }
+    }
+
+    static async getOne({ id }) {
+        let connection
+        try {
+            connection = await Conect.con()
+            const res = await connection.query(`
+                SELECT 
+                    p.mensaje,
+                    DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
+                    p.titulo,
+                    p.usuario_carnet,
+                    p.tipopublicacion_idtipopublicacion as tipo,
+                    CASE
+                        WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
+                        WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
+                        ELSE NULL
+                    END AS acercade
+                FROM publicacion p
+                LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
+                LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                WHERE p.idpublicacion = UUID_TO_BIN('${id}')
+                ORDER BY p.fecha DESC;
+                `)
+            return res[0]
+        } catch (error) {
+            return { message: 'Error', code: 0, error }
         } finally {
             if (connection) {
                 await Conect.close(connection)

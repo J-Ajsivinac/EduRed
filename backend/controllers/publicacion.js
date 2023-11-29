@@ -31,4 +31,11 @@ export class PubController {
         if (user) return res.json(user)
         // res.status(404).json({ message: 'user not found' })
     }
+
+    getPubOneID = async(req, res) => {
+        const id = req.params.id
+        const user = await this.pubModel.getOne({ id })
+        if (user) return res.json(user)
+        // res.status(404).json({ message: 'user not found' })
+    }
 }
