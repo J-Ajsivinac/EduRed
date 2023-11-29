@@ -12,6 +12,9 @@ export default {
         'sub-dark':'#353535'
       }
     },
+    transitionProperty: {
+        'width': 'width',
+      },
   },
   plugins: [],
 }

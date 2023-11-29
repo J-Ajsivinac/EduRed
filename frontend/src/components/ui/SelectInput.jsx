@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import './scroll.css'
 
-export function SelectInput({ options, placeHolder }) {
+export function SelectInput({ options, placeHolder, onSelectOption, value }) {
 
     const [openselect, setOpenSelect] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState(value); // Agregado estado selectedOption
+
+    useEffect(() => {
+        setSelectedOption(value); // Actualizar selectedOption cuando el valor cambie
+    }, [value]);
 
     function selectvalue(option) {
-        console.log(option)
         setSelectedOption(option);
         setOpenSelect(false);
+        onSelectOption(option); // Llama a la función proporcionada como prop
     }
 
     function openOption() {
@@ -19,7 +23,7 @@ export function SelectInput({ options, placeHolder }) {
     return (
         <>
             <input
-                value={selectedOption}
+                value={selectedOption ? selectedOption.nombre : ''}
                 onClick={openOption}
                 onBlur={() => {
                     setOpenSelect(false);
@@ -30,11 +34,10 @@ export function SelectInput({ options, placeHolder }) {
                 readOnly
             />
 
-
             <div className={openselect ? "absolute w-fit visible max-h-28 overflow-visible opacity-100 bg-yellow-700 z-10 px-6 overflow-y-auto" : "absolute w-full max-h-28 bg-yellow-700 rounded-sm top-full hidden -translate-y-10 overflow-hidden overflow-y-auto transition text-yellow-500"}>
                 {options.map((item, index) => (
                     <li onMouseDown={() => selectvalue(item)} key={index} className="z-20 bg-slate-400">
-                        {item}
+                        {item.nombre}
                     </li>
                 ))}
             </div >
@@ -45,4 +48,6 @@ export function SelectInput({ options, placeHolder }) {
 SelectInput.propTypes = {
     options: PropTypes.node.isRequired,
     placeHolder: PropTypes.node.isRequired,
+    onSelectOption: PropTypes.node.isRequired,
+    value: PropTypes.node,
 };
