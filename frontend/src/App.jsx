@@ -6,22 +6,25 @@ import Profile from './pages/Profile'
 import Publications from './pages/Publications'
 import ProtectedRoute from './ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
+import { PubProvider } from './context/PubContext'
 
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<h1>Home Page</h1>} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/init' element={<Init />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/publications' element={<Publications />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <PubProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<h1>Home Page</h1>} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/init' element={<Init />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/publications' element={<Publications />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </PubProvider>
     </AuthProvider>
   )
 }
