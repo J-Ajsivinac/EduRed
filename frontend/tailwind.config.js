@@ -9,7 +9,8 @@ export default {
       colors: {
         'bg-dark': '#151515',
         'panel-dark': '#272727',
-        'sub-dark':'#353535'
+        'sub-dark':'#353535',
+        'border-dark':'#404040'
       }
     },
     transitionProperty: {
