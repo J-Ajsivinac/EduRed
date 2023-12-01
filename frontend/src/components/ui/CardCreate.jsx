@@ -13,7 +13,7 @@ export function CardCreate({ userName }) {
     const { courses, getCourses, createPub, getTeachers } = usePubs();
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedOptionType, setSelectedOptionType] = useState(null);
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors }, reset } = useForm()
     const { user } = useAuth()
     const toggleModal = () => {
         setModalC(!modalC);
@@ -22,10 +22,10 @@ export function CardCreate({ userName }) {
     const typesPub = [
         {
             id: 1,
-            nombre: "Catedratico"
+            nombre: "curso"
         }, {
             id: 2,
-            nombre: "Curso"
+            nombre: "catedratico"
         }
     ]
     // var coursesList
@@ -33,7 +33,7 @@ export function CardCreate({ userName }) {
         if (selectedOptionType === null) {
             return
         }
-        if (selectedOptionType === 1) {
+        if (selectedOptionType === 2) {
             getTeachers()
         } else {
             getCourses()
@@ -50,9 +50,9 @@ export function CardCreate({ userName }) {
 
     const handleSelectOption = (option) => {
         if (option) {
-            if (selectedOptionType === 1) {
+            if (selectedOptionType === 2) {
                 setSelectedOption(option.idcatedratico);
-            } else if (selectedOptionType === 2) {
+            } else if (selectedOptionType === 1) {
                 setSelectedOption(option.idcurso);
             }
         }
@@ -63,12 +63,15 @@ export function CardCreate({ userName }) {
         console.log(selectedOptionType, selectedOption)
         // Aquí puedes acceder al ID de la opción seleccionada
         if (selectedOption && selectedOptionType) {
-            values["tipo"] = selectedOptionType
+            values["idtipo"] = parseInt(selectedOptionType)
             values["acercade"] = selectedOption
             values["carnet"] = user.carnet
             // console.log(values)
             createPub(values)
-
+            toggleModal()
+            setSelectedOption(null)
+            setSelectedOptionType(null)
+            reset()
 
         } else {
             console.log('Una opción o varias opcioens no esta seleccionada');
@@ -101,7 +104,7 @@ export function CardCreate({ userName }) {
                             </div>
                             <div className="flex flex-row g-3 w-full justify-between">
                                 <div className="w-[47%]">
-                                    <SelectInput options={typesPub} placeHolder={"Tipo de Publicación"} onSelectOption={handleSelectOptionType} />
+                                    <SelectInput options={typesPub} placeHolder={"Tipo de Publicación"} onSelectOption={handleSelectOptionType} value={selectedOptionType} />
                                 </div>
                                 <div className="w-[47%]">
                                     <SelectInput options={courses} placeHolder={"Catedratico/Curso"} onSelectOption={handleSelectOption} value={selectedOption} />

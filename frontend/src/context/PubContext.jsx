@@ -4,7 +4,7 @@ import {
     getCoursesRequest,
     getTeacherRequest,
 } from "../api/type";
-import { createPubRequest } from '../api/pub'
+import { createPubRequest, getPubRequest } from '../api/pub'
 // import {
 //     createPubRequest
 // } from "../api/pub";
@@ -19,6 +19,13 @@ export const usePubs = () => {
 
 export function PubProvider({ children }) {
     const [courses, setCourses] = useState([]);
+    const [pubs, setPubs] = useState([]);
+
+    const getPubs = async () => {
+        const res = await getPubRequest();
+        console.log(res.data)
+        setPubs(res.data);
+    }
 
     const getCourses = async () => {
         try {
@@ -42,6 +49,7 @@ export function PubProvider({ children }) {
         try {
             const res = await createPubRequest(pub);
             console.log(res);
+            // console.log(pub)
         } catch (error) {
             console.log(error);
         }
@@ -53,7 +61,9 @@ export function PubProvider({ children }) {
                 courses,
                 getCourses,
                 createPub,
-                getTeachers
+                getTeachers,
+                pubs,
+                getPubs
             }}
         >
             {children}
