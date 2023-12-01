@@ -7,12 +7,14 @@ import "./scroll.css"
 import { SelectInput } from './SelectInput'
 import { usePubs } from "../../context/PubContext";
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../../context/AuthContext'
 export function CardCreate({ userName }) {
     const [modalC, setModalC] = useState(false);
     const { courses, getCourses, createPub, getTeachers } = usePubs();
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedOptionType, setSelectedOptionType] = useState(null);
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const { user } = useAuth()
     const toggleModal = () => {
         setModalC(!modalC);
     };
@@ -63,6 +65,7 @@ export function CardCreate({ userName }) {
         if (selectedOption && selectedOptionType) {
             values["tipo"] = selectedOptionType
             values["acercade"] = selectedOption
+            values["carnet"] = user.carnet
             // console.log(values)
             createPub(values)
 

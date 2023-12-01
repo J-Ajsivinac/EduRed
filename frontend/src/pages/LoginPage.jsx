@@ -14,7 +14,7 @@ function LoginPage() {
     })
     const navigate = useNavigate()
     useEffect(() => {
-        if (isAuthenticated) navigate("/publications")
+        if (isAuthenticated) navigate("/init")
     }, [isAuthenticated])
 
     useEffect(() => {

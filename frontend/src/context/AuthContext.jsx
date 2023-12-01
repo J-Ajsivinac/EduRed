@@ -32,10 +32,10 @@ export const AuthProvider = ({ children }) => {
     const signin = async (user) => {
         try {
             const res = await loginRequest(user)
-            // console.log(res)
+            console.log("sigini", res.data)
             setUser(res.data)
             setIsAuthenticated(true);
-            console.log(Cookies.get())
+            console.log("Cokies MRD", Cookies.get())
         } catch (error) {
             setErrors(error.response.data)
         }
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
             try {
                 const res = await verifyTokenRequest(cookies.token);
-                console.log(res);
+                console.log(res.data);
                 if (!res.data) return setIsAuthenticated(false);
                 setIsAuthenticated(true);
                 setUser(res.data);

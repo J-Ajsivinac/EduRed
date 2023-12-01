@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import { createContext, useContext, useState } from "react";
 import {
     getCoursesRequest,
-    getTeacherRequest
+    getTeacherRequest,
 } from "../api/type";
+import { createPubRequest } from '../api/pub'
 // import {
 //     createPubRequest
 // } from "../api/pub";
@@ -39,8 +40,8 @@ export function PubProvider({ children }) {
 
     const createPub = async (pub) => {
         try {
-            // const res = await createPubRequest(task);
-            console.log(pub)
+            const res = await createPubRequest(pub);
+            console.log(res);
         } catch (error) {
             console.log(error);
         }
