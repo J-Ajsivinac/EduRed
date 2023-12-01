@@ -39,7 +39,7 @@ export class PublicationModel {
                     p.mensaje,
                     DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
                     p.titulo,
-                    p.usuario_carnet,
+                    CONCAT(u.nombre, ' ', u.apellido) as nombre,
                     p.tipopublicacion_idtipopublicacion AS tipo,
                     CASE
                         WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
@@ -49,6 +49,7 @@ export class PublicationModel {
                 FROM publicacion p
                 LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
                 LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                INNER JOIN usuario u on p.usuario_carnet = u.carnet
                 ORDER BY p.fecha DESC;
                 `)
             return res[0]
@@ -69,7 +70,7 @@ export class PublicationModel {
                     p.mensaje,
                     DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
                     p.titulo,
-                    p.usuario_carnet,
+                    CONCAT(u.nombre, ' ', u.apellido) as nombre,
                     p.tipopublicacion_idtipopublicacion as tipo,
                     CASE
                         WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
@@ -79,6 +80,7 @@ export class PublicationModel {
                 FROM publicacion p
                 LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
                 LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                INNER JOIN usuario u on p.usuario_carnet = u.carnet
                 WHERE p.tipopublicacion_idtipopublicacion = ?
                 ORDER BY p.fecha DESC;
                 `, [id])
@@ -102,7 +104,7 @@ export class PublicationModel {
                     p.mensaje,
                     DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
                     p.titulo,
-                    p.usuario_carnet,
+                    CONCAT(u.nombre, ' ', u.apellido) as nombre,
                     p.tipopublicacion_idtipopublicacion as tipo,
                     CASE
                         WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
@@ -112,6 +114,7 @@ export class PublicationModel {
                 FROM publicacion p
                 LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
                 LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                INNER JOIN usuario u on p.usuario_carnet = u.carnet
                 WHERE p.acercade = UUID_TO_BIN('${id}')
                 ORDER BY p.fecha DESC;
                 `)
@@ -134,7 +137,7 @@ export class PublicationModel {
                     p.mensaje,
                     DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
                     p.titulo,
-                    p.usuario_carnet,
+                    CONCAT(u.nombre, ' ', u.apellido) as nombre,
                     p.tipopublicacion_idtipopublicacion as tipo,
                     CASE
                         WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
@@ -144,6 +147,7 @@ export class PublicationModel {
                 FROM publicacion p
                 LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
                 LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+                INNER JOIN usuario u on p.usuario_carnet = u.carnet
                 WHERE p.idpublicacion = UUID_TO_BIN('${id}')
                 ORDER BY p.fecha DESC;
                 `)
