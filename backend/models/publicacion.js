@@ -45,11 +45,14 @@ export class PublicationModel {
                         WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
                         WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
                         ELSE NULL
-                    END AS acercade
+                    END AS acercade,
+                    COUNT(com.idcomentario) AS numero_comentarios
                 FROM publicacion p
                 LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
                 LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
                 INNER JOIN usuario u on p.usuario_carnet = u.carnet
+                LEFT JOIN comentario com ON p.idpublicacion = com.publicacion_idpublicacion
+                GROUP BY p.idpublicacion, p.mensaje, p.fecha, p.titulo, u.nombre, u.apellido, p.tipopublicacion_idtipopublicacion, c.nombre, cat.nombre, cat.apellido
                 ORDER BY p.fecha DESC;
                 `)
             return res[0]
@@ -66,23 +69,28 @@ export class PublicationModel {
         let connection
         try {
             connection = await Conect.con()
-            const res = await connection.query(`SELECT 
-                    p.mensaje,
-                    DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
-                    p.titulo,
-                    CONCAT(u.nombre, ' ', u.apellido) as nombre,
-                    p.tipopublicacion_idtipopublicacion as tipo,
-                    CASE
-                        WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
-                        WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
-                        ELSE NULL
-                    END AS acercade
-                FROM publicacion p
-                LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
-                LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
-                INNER JOIN usuario u on p.usuario_carnet = u.carnet
-                WHERE p.tipopublicacion_idtipopublicacion = ?
-                ORDER BY p.fecha DESC;
+            const res = await connection.query(`
+            SELECT 
+                p.mensaje,
+                DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
+                p.titulo,
+                CONCAT(u.nombre, ' ', u.apellido) AS nombre,
+                p.tipopublicacion_idtipopublicacion AS tipo,
+                CASE
+                    WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
+                    WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
+                    ELSE NULL
+                END AS acercade,
+                COUNT(com.idcomentario) AS numero_comentarios
+            FROM publicacion p
+            LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
+            LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
+            INNER JOIN usuario u ON p.usuario_carnet = u.carnet
+            LEFT JOIN comentario com ON p.idpublicacion = com.publicacion_idpublicacion
+            WHERE p.tipopublicacion_idtipopublicacion = ?
+            GROUP BY 
+                p.idpublicacion, p.mensaje, p.fecha, p.titulo, u.nombre, u.apellido, p.tipopublicacion_idtipopublicacion, c.nombre, cat.nombre, cat.apellido
+            ORDER BY p.fecha DESC;
                 `, [id])
             return res[0]
         } catch (error) {
@@ -110,12 +118,15 @@ export class PublicationModel {
                         WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
                         WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
                         ELSE NULL
-                    END AS acercade
+                    END AS acercade,
+                    COUNT(com.idcomentario) AS numero_comentarios
                 FROM publicacion p
                 LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
                 LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
                 INNER JOIN usuario u on p.usuario_carnet = u.carnet
+                LEFT JOIN comentario com ON p.idpublicacion = com.publicacion_idpublicacion
                 WHERE p.acercade = UUID_TO_BIN('${id}')
+                GROUP BY p.idpublicacion, p.mensaje, p.fecha, p.titulo, u.nombre, u.apellido, p.tipopublicacion_idtipopublicacion, c.nombre, cat.nombre, cat.apellido
                 ORDER BY p.fecha DESC;
                 `)
             return res[0]
@@ -143,12 +154,15 @@ export class PublicationModel {
                         WHEN p.tipopublicacion_idtipopublicacion = 1 THEN c.nombre
                         WHEN p.tipopublicacion_idtipopublicacion = 2 THEN CONCAT(cat.nombre, ' ', cat.apellido)
                         ELSE NULL
-                    END AS acercade
+                    END AS acercade,
+                    COUNT(com.idcomentario) AS numero_comentarios
                 FROM publicacion p
                 LEFT JOIN curso c ON p.tipopublicacion_idtipopublicacion = 1 AND p.acercade = c.idcurso
                 LEFT JOIN catedratico cat ON p.tipopublicacion_idtipopublicacion = 2 AND p.acercade = cat.idcatedratico
                 INNER JOIN usuario u on p.usuario_carnet = u.carnet
+                LEFT JOIN comentario com ON p.idpublicacion = com.publicacion_idpublicacion
                 WHERE p.idpublicacion = UUID_TO_BIN('${id}')
+                GROUP BY p.idpublicacion, p.mensaje, p.fecha, p.titulo, u.nombre, u.apellido, p.tipopublicacion_idtipopublicacion, c.nombre, cat.nombre, cat.apellido
                 ORDER BY p.fecha DESC;
                 `)
             return res[0]
