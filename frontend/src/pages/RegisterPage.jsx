@@ -16,7 +16,7 @@ function RegisterPage() {
         signup(values)
     })
     useEffect(() => {
-        if (isAuthenticated) navigate("/publications")
+        if (isAuthenticated) navigate("/init")
     }, [isAuthenticated])
 
     useEffect(() => {

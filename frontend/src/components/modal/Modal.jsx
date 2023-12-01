@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 export default function Modal() {
     const [modal, setModal] = useState(false);
@@ -15,13 +16,13 @@ export default function Modal() {
 
     return (
         <>
-            <button onClick={toggleModal} className='flex flex-row items-center gap-x-2 border border-zinc-400 py-1 px-4 rounded-md '>
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 18q-.425 0-.713-.288T10 17q0-.425.288-.713T11 16h2q.425 0 .713.288T14 17q0 .425-.288.713T13 18h-2Zm-4-5q-.425 0-.713-.288T6 12q0-.425.288-.713T7 11h10q.425 0 .713.288T18 12q0 .425-.288.713T17 13H7ZM4 8q-.425 0-.713-.288T3 7q0-.425.288-.713T4 6h16q.425 0 .713.288T21 7q0 .425-.288.713T20 8H4Z" /></svg>
-                Filtrar
+            <button onClick={toggleModal} className='flex flex-row items-center border-2 border-border-dark py-1 px-2 rounded-md w-36 justify-between '>
+                <span>Filtrar</span>
+                <MdKeyboardArrowDown size={22} />
             </button>
 
             {modal && (
-                <div className="w-full h-full top-0 left-0 right-0 bottom-0 fixed">
+                <div className="w-full h-full top-0 left-0 right-0 bottom-0 fixed z-10">
                     <div onClick={toggleModal} className="w-full h-full top-0 left-0 right-0 bottom-0 fixed"></div>
                     <div className="absolute top-20 left-[20%]  py-3 px-3 max-w-[400px] min bg-sub-dark rounded-md">
                         <h2>Hello Modal</h2>
