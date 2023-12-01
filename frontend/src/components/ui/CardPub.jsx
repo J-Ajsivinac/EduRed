@@ -22,7 +22,7 @@ export function CardPub({ userName, title, date, content, about }) {
             <div className="flex w-full flex-row items-center gap-4 justify-between">
                 <Link className='flex flex-row gap-2 px-2 py-2 items-center hover:bg-sub-dark rounded-md transition-all'><PiChatCircleDuotone size={22} />Comentarios: 2</Link>
                 <div className="text-clip truncate overflow-hidden w-fit flex flex-row gap-2">
-                    <span className="bg-[#767efa] px-3 py-1 rounded-lg">{about}</span>
+                    <span className="border-2 border-[#767efa] px-3 py-1 rounded-lg text-gray-300">{about}</span>
                 </div>
             </div>
         </div>

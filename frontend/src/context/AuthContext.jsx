@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     const signin = async (user) => {
         try {
             const res = await loginRequest(user)
-            console.log("sigini", res.data)
+            // console.log("sigini", res.data)
             setUser(res.data)
             setIsAuthenticated(true);
             console.log("Cokies MRD", Cookies.get())
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkLogin = async () => {
             const cookies = Cookies.get();
-            console.log(cookies)
+            // console.log(cookies)
             if (!cookies.token) {
                 setIsAuthenticated(false);
                 setLoading(false);
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
             try {
                 const res = await verifyTokenRequest(cookies.token);
-                console.log(res.data);
+                // console.log(res.data);
                 if (!res.data) return setIsAuthenticated(false);
                 setIsAuthenticated(true);
                 setUser(res.data);
