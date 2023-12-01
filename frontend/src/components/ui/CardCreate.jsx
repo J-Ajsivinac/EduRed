@@ -8,9 +8,9 @@ import { SelectInput } from './SelectInput'
 import { usePubs } from "../../context/PubContext";
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../../context/AuthContext'
-export function CardCreate({ userName }) {
+export function CardCreate({ userName, onCreatePub }) {
     const [modalC, setModalC] = useState(false);
-    const { courses, getCourses, createPub, getTeachers } = usePubs();
+    const { courses, getCourses, getTeachers } = usePubs();
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedOptionType, setSelectedOptionType] = useState(null);
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
@@ -67,7 +67,7 @@ export function CardCreate({ userName }) {
             values["acercade"] = selectedOption
             values["carnet"] = user.carnet
             // console.log(values)
-            createPub(values)
+            onCreatePub(values)
             toggleModal()
             setSelectedOption(null)
             setSelectedOptionType(null)
@@ -134,4 +134,5 @@ export function CardCreate({ userName }) {
 
 CardCreate.propTypes = {
     userName: PropTypes.node.isRequired,
+    onCreatePub: PropTypes.node.isRequired,
 };

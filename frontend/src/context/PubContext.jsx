@@ -5,9 +5,6 @@ import {
     getTeacherRequest,
 } from "../api/type";
 import { createPubRequest, getPubRequest } from '../api/pub'
-// import {
-//     createPubRequest
-// } from "../api/pub";
 
 const PubContext = createContext();
 
@@ -48,8 +45,8 @@ export function PubProvider({ children }) {
     const createPub = async (pub) => {
         try {
             const res = await createPubRequest(pub);
+            getPubs();
             console.log(res);
-            // console.log(pub)
         } catch (error) {
             console.log(error);
         }
@@ -62,6 +59,7 @@ export function PubProvider({ children }) {
                 getCourses,
                 createPub,
                 getTeachers,
+                setPubs,
                 pubs,
                 getPubs
             }}
