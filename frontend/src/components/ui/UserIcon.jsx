@@ -9,5 +9,5 @@ export function UserIcon({ userName }) {
 }
 
 UserIcon.propTypes = {
-    userName: PropTypes.node.isRequired,
+    userName: PropTypes.node,
 };
