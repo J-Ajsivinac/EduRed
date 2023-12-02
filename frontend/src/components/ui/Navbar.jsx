@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import { UserIcon } from './UserIcon'
 import { PiMagnifyingGlassFill } from "react-icons/pi";
+import { Link } from 'react-router-dom'
 import Modal from '../modal/Modal'
 export function Navbar({ userName }) {
     return (
-        <nav className="bg-panel-dark my-3 mx-6 flex justify-between py-4 px-10 rounded-lg text-white items-center">
-            <h1 className="text-xl font-bold">
+        <nav className="fixed top-0 w-full bg-panel-dark flex justify-between py-4 px-10 rounded-lg text-white items-center">
+            <Link to="/init" className="text-xl font-bold">
                 EduRed
-            </h1>
+            </Link>
             <div className='flex gap-x-4 w-2/3'>
                 <Modal />
                 <label className="relative block w-full">

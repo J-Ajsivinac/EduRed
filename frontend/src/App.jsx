@@ -20,7 +20,7 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route path='/init' element={<Init />} />
               <Route path='/profile' element={<Profile />} />
-              <Route path='/publications' element={<Publications />} />
+              <Route path='/publication/:id' element={<Publications />} />
             </Route>
           </Routes>
         </BrowserRouter>
