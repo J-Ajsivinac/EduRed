@@ -26,14 +26,14 @@ function Init() {
     return (
         <>
             <Navbar userName={user.nombre} />
-            <div className='w-full flex justify-center flex-col items-center gap-4 my-4'>
+            <div className='mt-20 w-full flex justify-center flex-col items-center gap-4 my-4'>
                 <CardCreate userName={user.nombre} onCreatePub={handleCreatePub} />
                 {/* <CardPub userName={"Pedro"} title="Titulo" date="Hoy" content="Texto de prueba" about={"Introduccion a la programacion 2"} /> */}
                 {pubs.map((pub, index) => (
                     // <li key={index} className="z-20 list-none text-white">
                     //     {pub.titulo}
                     // </li>
-                    <CardPub key={index} userName={pub.nombre} title={pub.titulo} date={pub.fecha_f} content={pub.mensaje} about={pub.acercade} number={pub.numero_comentarios} />
+                    <CardPub key={index} userName={pub.nombre} title={pub.titulo} date={pub.fecha_f} content={pub.mensaje} about={pub.acercade} number={pub.numero_comentarios} id={pub.idpublicacion} click={true} />
                 ))}
             </div>
         </>

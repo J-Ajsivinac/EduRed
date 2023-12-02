@@ -4,7 +4,7 @@ import {
     getCoursesRequest,
     getTeacherRequest,
 } from "../api/type";
-import { createPubRequest, getPubRequest } from '../api/pub'
+import { createPubRequest, getPubRequest, getPubByIDRequest, getComRequest } from '../api/pub'
 
 const PubContext = createContext();
 
@@ -17,11 +17,31 @@ export const usePubs = () => {
 export function PubProvider({ children }) {
     const [courses, setCourses] = useState([]);
     const [pubs, setPubs] = useState([]);
+    const [pub, setPub] = useState([]);
+    const [comments, setComments] = useState([]);
 
     const getPubs = async () => {
         const res = await getPubRequest();
         console.log(res.data)
         setPubs(res.data);
+    }
+
+    const getPubByID = async (id) => {
+        try {
+            const res = await getPubByIDRequest(id);
+            console.log(res.data[0])
+            setPub(res.data[0]);
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
+            setPub(null);
+        }
+    }
+
+    const getComments = async (id) => {
+        const res = await getComRequest(id);
+        console.log(res)
+        setComments(res.data);
     }
 
     const getCourses = async () => {
@@ -61,7 +81,11 @@ export function PubProvider({ children }) {
                 getTeachers,
                 setPubs,
                 pubs,
-                getPubs
+                getPubs,
+                getPubByID,
+                pub,
+                getComments,
+                comments
             }}
         >
             {children}
