@@ -29,9 +29,9 @@ export function PubProvider({ children }) {
     const getPubByID = async (id) => {
         try {
             const res = await getPubByIDRequest(id);
-            console.log(res.data[0])
+            // console.log(res.data[0])
             setPub(res.data[0]);
-            console.log(res.data)
+            // console.log(res.data)
         } catch (error) {
             console.log(error)
             setPub(null);
@@ -40,7 +40,7 @@ export function PubProvider({ children }) {
 
     const getComments = async (id) => {
         const res = await getComRequest(id);
-        console.log(res)
+        // console.log(res)
         setComments(res.data);
     }
 
