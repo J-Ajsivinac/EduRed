@@ -34,7 +34,7 @@ export class CommentModel {
 
         try {
             connection = await Conect.con()
-            const res = await connection.query("SELECT usuario_carnet,contenido,DATE_FORMAT(fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,publicacion_usuario_carnet AS carnetOriginal FROM comentario WHERE publicacion_idpublicacion = UUID_TO_BIN(?) ORDER BY fecha DESC;", [id])
+            const res = await connection.query("SELECT CONCAT(u.nombre, ' ', u.apellido) as nombre,c.contenido,DATE_FORMAT(c.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,c.publicacion_usuario_carnet AS carnetPub FROM comentario c INNER JOIN usuario u on c.usuario_carnet = u.carnet WHERE c.publicacion_idpublicacion = UUID_TO_BIN(?) ORDER BY c.fecha DESC;", [id])
             return res[0]
         } catch (error) {
             return { message: 'Error', code: 0, error }
