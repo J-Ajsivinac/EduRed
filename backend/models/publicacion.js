@@ -146,6 +146,7 @@ export class PublicationModel {
             const res = await connection.query(`
                 SELECT 
                     p.mensaje,
+                    p.usuario_carnet as carnet,
                     DATE_FORMAT(p.fecha, '%Y-%m-%d %H:%i:%s') AS fecha_f,
                     p.titulo,
                     CONCAT(u.nombre, ' ', u.apellido) as nombre,
