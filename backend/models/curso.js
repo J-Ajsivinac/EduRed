@@ -14,7 +14,7 @@ export class CourseModel {
             if (res.affectedRows === 0) return { message: 'Error al registrar el curso', code: 0 }
             return { message: 'Curso registrado con éxito', code: 1 }
         } catch (error) {
-            return { message: 'Error' }
+            return { message: 'Error', code: 0 }
         } finally {
             if (connection) {
                 await Conect.close(connection)
