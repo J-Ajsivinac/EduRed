@@ -5,7 +5,7 @@ import { Item } from '../components/ui/Item'
 import { ModalC } from '../components/modal/ModalC'
 import { getCoursesRequest, addCoursesRequest } from '../api/user'
 import { useState, useEffect } from "react";
-
+import { Toaster, toast } from 'sonner';
 
 function Profile() {
     const { id } = useParams()
@@ -27,12 +27,13 @@ function Profile() {
 
     const handleAddCourse = async (values) => {
         try {
-            const res = await addCoursesRequest(values);
+            const _res = await addCoursesRequest(values);
             // console.log(values);
             // getPubs();
             getCoursesW();
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            toast.error(`${error.response.data.message}`, { duration: 2000 })
         }
     };
 
@@ -82,6 +83,7 @@ function Profile() {
                     )) : <p className='text-text-gray w-full flex items-center justify-center py-2'>No hay cursos ganados</p>}
                 </div>
             </div>
+            <Toaster position="top-center" richColors theme="dark" />
         </>
     )
 }
