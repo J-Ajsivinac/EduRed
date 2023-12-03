@@ -10,7 +10,9 @@ export default {
         'bg-dark': '#151515',
         'panel-dark': '#272727',
         'sub-dark':'#353535',
-        'border-dark':'#404040'
+        'border-dark':'#404040',
+        'text-gray':'#BFBFBF',
+        'button-gray':'#3c3e43'
       }
     },
     transitionProperty: {

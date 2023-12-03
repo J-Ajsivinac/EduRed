@@ -10,7 +10,7 @@ export function CardPub({ userName, title, date, content, about, number, id, cli
                     <UserIcon userName={userName} />
                     <div className='flex flex-col'>
                         <span>{userName}</span>
-                        <small className='font-normal'>{date}</small>
+                        <small className='font-normal text-text-gray'>{date}</small>
                     </div>
                 </div>
 
@@ -24,7 +24,7 @@ export function CardPub({ userName, title, date, content, about, number, id, cli
                 }
 
                 <div className="text-clip truncate overflow-hidden w-fit flex flex-row gap-2">
-                    <span className="border-2 border-[#767efa] px-3 py-1 rounded-lg text-gray-300">{about}</span>
+                    <span className="border-2 border-[#767efa] px-4 py-1 rounded-lg text-gray-300">{about}</span>
                 </div>
             </div>
         </div>

@@ -19,7 +19,7 @@ export default function App() {
             <Route path='/register' element={<RegisterPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path='/init' element={<Init />} />
-              <Route path='/profile' element={<Profile />} />
+              <Route path='/profile/:id' element={<Profile />} />
               <Route path='/publication/:id' element={<Publications />} />
             </Route>
           </Routes>
