@@ -2,12 +2,40 @@ import { useParams } from 'react-router-dom'
 import { Navbar } from '../components/ui/Navbar'
 import { useAuth } from "../context/AuthContext";
 import { Item } from '../components/ui/Item'
-import { PiPlusCircleFill } from "react-icons/pi";
+import { ModalC } from '../components/modal/ModalC'
+import { getCoursesRequest, addCoursesRequest } from '../api/user'
+import { useState, useEffect } from "react";
+
 
 function Profile() {
     const { id } = useParams()
     const { user } = useAuth();
-    console.log(user)
+    const [coursesW, setCoursesW] = useState([]);
+    const [total, setTotal] = useState([]);
+
+    const getCoursesW = async () => {
+        const res = await getCoursesRequest(id);
+        setTotal(res.data.reduce(function (acumulador, elemento) {
+            return acumulador + elemento.creditos;
+        }, 0))
+        setCoursesW(res.data);
+    }
+
+    useEffect(() => {
+        getCoursesW()
+    }, [])
+
+    const handleAddCourse = async (values) => {
+        try {
+            const res = await addCoursesRequest(values);
+            // console.log(values);
+            // getPubs();
+            getCoursesW();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <>
             <Navbar userName={user.nombre} />
@@ -30,16 +58,16 @@ function Profile() {
                     </div>
                     <div className='flex flex-col items-center justify-center bg-panel-dark flex-[2] rounded-md gap-2'>
                         <div className='text-white font-bold text-lg'>Creditos</div>
-                        <div className='text-3xl font-bold text-[#c1e3df]'>0</div>
+                        <div className='text-3xl font-bold text-[#c1e3df]'>{total}</div>
                     </div>
                 </div>
                 <div className='flex flex-col w-3/5 items-stretch justify-between gap-2 text-white py-4 px-5 rounded-md bg-panel-dark'>
-                    <div className='w-full flex flex-row justify-between py-1'>
+                    <div className='relative w-full flex flex-row justify-between py-1'>
                         <span className='flex items-center justify-center font-bold '>
                             Cursos Aprobados
                         </span>
                         {
-                            parseInt(id) === user.carnet ? <button className='text-white px-3 gap-2 py-1 rounded-md flex flex-row border-[3px] border-button-gray items-center'><PiPlusCircleFill size={22} />Agregar Curso</button>
+                            parseInt(id) === user.carnet ? <ModalC onAddCourse={handleAddCourse} />
                                 : null
                         }
                     </div>
@@ -49,9 +77,9 @@ function Profile() {
                         </div>
                         <span>Creditos</span>
                     </div>
-                    <Item name={"IPC-2"} number={6} />
-                    <Item name={"IPC-2"} number={6} />
-                    <Item name={"IPC-2"} number={6} />
+                    {coursesW && coursesW.length > 0 ? coursesW.map((course, index) => (
+                        <Item key={index} name={course.nombre} number={course.creditos}></Item>
+                    )) : <p className='text-text-gray w-full flex items-center justify-center py-2'>No hay cursos ganados</p>}
                 </div>
             </div>
         </>

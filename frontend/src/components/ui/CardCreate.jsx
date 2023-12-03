@@ -90,7 +90,7 @@ export function CardCreate({ userName, onCreatePub }) {
             </div>
             {modalC && (
                 <div className="w-full h-screen top-0 left-0 right-0 bottom-0 fixed z-0">
-                    <div onClick={toggleModal} className="w-full h-screen top-0 left-0 right-0 bottom-0 fixed backdrop-blur-sm"></div>
+                    <div onClick={toggleModal} className="w-full h-screen top-0 left-0 right-0 bottom-0 fixed backdrop-blur-sm bg-black/40"></div>
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-sub-dark py-4 px-6 rounded-md min-w-[480px]">
                         <form className="flex flex-col w-full h-full gap-y-3" onSubmit={onSubmit}>
                             <div className="flex flex-row justify-between items-center text-white">
