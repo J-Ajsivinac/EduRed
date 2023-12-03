@@ -67,7 +67,7 @@ export class UserModel {
             if (res.affectedRows === 0) return { message: 'Error al registrar el curso ganado', code: 0 }
             return { message: 'Curso ganado registrado con éxito', code: 1 }
         } catch (error) {
-            if (error.code === 'ER_DUP_ENTRY') return { message: 'El curso ya ha sido registrado' }
+            if (error.code === 'ER_DUP_ENTRY') return { message: 'El curso ya ha sido registrado', code: 0 }
             return { message: 'Error', code: 0, error }
         } finally {
             if (connection) {

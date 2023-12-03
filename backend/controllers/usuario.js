@@ -38,8 +38,9 @@ export class UserController {
     addCourse = async(req, res) => {
         const data = validateCourses(req.body)
         if (!data.success) return res.status(400).json(data.error)
-        const changePassword = await this.userModel.addCourse({ input: data.data })
-        res.status(200).json(changePassword)
+        const newCourse = await this.userModel.addCourse({ input: data.data })
+        if (newCourse.code === 0) return res.status(400).json(newCourse)
+        res.status(200).json(newCourse)
     }
 
     getCourses = async(req, res) => {

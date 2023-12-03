@@ -9,6 +9,7 @@ export class CourseController {
         const result = validateCourse(req.body)
         if (!result.success) return res.status(400).json(result.error)
         const newPub = await this.courseModel.creteCourse({ input: result.data })
+        if (newPub.code === 0) return res.status(400).json(newPub)
         res.status(201).json(newPub)
     }
 
