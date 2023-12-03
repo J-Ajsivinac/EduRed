@@ -39,6 +39,7 @@ export function ModalC({ onAddCourse }) {
             values["carnet"] = user.carnet
             // console.log(values)
             onAddCourse(values)
+            setSelectedOption(null)
         } else {
             console.log('Una opción o varias opcioens no esta seleccionada');
         }
