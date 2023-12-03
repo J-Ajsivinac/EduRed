@@ -45,9 +45,9 @@ export function SelectInput({ options, placeHolder, onSelectOption, value }) {
                     onClick={openOption}
                 />
             </div>
-            <div className={openselect ? "absolute w-[42%] py-2 visible translate-y-10 max-h-28 overflow-visible opacity-100 bg-panel-dark z-10 px-6 overflow-y-auto rounded-md" : "absolute w-full max-h-28 bg-yellow-700 rounded-sm top-full hidden -translate-y-10 overflow-hidden overflow-y-auto transition text-yellow-500"}>
+            <div className={openselect ? "absolute w-[42%] py-2 visible translate-y-10 max-h-28 overflow-visible opacity-100 bg-panel-dark z-10 px-2 overflow-y-auto rounded-md" : "absolute w-full max-h-28 bg-yellow-700 rounded-sm top-full hidden -translate-y-10 overflow-hidden overflow-y-auto transition text-yellow-500"}>
                 {options.map((item, index) => (
-                    <li onMouseDown={() => selectvalue(item)} key={index} className="z-20 list-none text-white">
+                    <li onMouseDown={() => selectvalue(item)} key={index} className="z-20 list-none text-white hover:bg-sub-dark px-2 py-1 rounded-md">
                         {item.nombre}
                     </li>
                 ))}

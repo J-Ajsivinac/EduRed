@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { UserIcon } from './UserIcon'
 import { PiMagnifyingGlassFill } from "react-icons/pi";
 import { Link } from 'react-router-dom'
+import { Account } from './Account'
 import Modal from '../modal/Modal'
 export function Navbar({ userName }) {
+    console.log(userName)
     return (
         <nav className="fixed top-0 w-full bg-panel-dark flex justify-between py-4 px-10 rounded-lg text-white items-center">
             <Link to="/init" className="text-xl font-bold">
@@ -21,8 +22,7 @@ export function Navbar({ userName }) {
                 </label>
             </div>
             <ul className="flex gap-x-2 items-center">
-                <UserIcon userName={userName} />
-                <li>{userName}</li>
+                <Account />
             </ul>
         </nav>
     )

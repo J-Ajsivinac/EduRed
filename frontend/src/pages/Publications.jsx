@@ -18,6 +18,7 @@ function Publications() {
     const { pub, getPubByID, getComments, comments } = usePubs()
     const { id } = useParams()
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
+
     useEffect(() => {
         getPubByID(id)
         getComments(id)
@@ -26,7 +27,8 @@ function Publications() {
     const createCom = async (pub) => {
         try {
             const res = await createComRequest(pub);
-            getPubByID(id);
+            getComments(id);
+            getPubByID(id)
             console.log(res);
         } catch (error) {
             console.log(error);
@@ -35,12 +37,10 @@ function Publications() {
 
     const onSubmit = handleSubmit(async values => {
         values["carnet"] = user.carnet
-        values["idpublicacion"] = id
+        values["idPub"] = id
         values["carnetOriginal"] = pub.carnet
-        console.log(values, pub)
-        // createCom()
+        createCom(values)
         reset()
-
     });
 
     if (!pub || pub.length === 0) {
@@ -65,11 +65,11 @@ function Publications() {
 
                 <form className='w-3/5 flex flex-col bg-panel-dark py-4 rounded-md px-4 ' onSubmit={onSubmit}>
                     <div className='flex w-full flex-row items-center gap-4'>
-                        <UserIcon userName={pub.nombre} className="w-fit"></UserIcon>
+                        <UserIcon userName={user.nombre} className="w-fit"></UserIcon>
                         <textarea className=' pt-2 px-2 resize-none w-[93%] bg-sub-dark rounded-md h-16 text-white outline-none' placeholder='Comentario'
                             {...register("contenido", { required: true })} />
-
                     </div>
+                    {errors.contenido && (<p className='text-red-400 px-12 my-2'>Contenido del comentario requerido</p>)}
                     <div className='w-1/ px-12 mt-3'>
                         <ButtonSend text="Comentar" />
                     </div>
